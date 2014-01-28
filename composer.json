@@ -1,0 +1,16 @@
+{
+    "name": "goweb/php-api",
+    "description": "PHP lib for communication between different services",
+    "license": "Commercial",
+    "authors": [
+        {
+            "name": "Dmytro Sokil",
+            "email": "dmytro.sokil@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "GoWeb": "src/"
+        }
+    }
+}
