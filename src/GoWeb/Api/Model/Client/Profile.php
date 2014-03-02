@@ -113,6 +113,17 @@ class Profile
         return $this->_data['status'];
     }
     
+    public function setAgent($agent)
+    {
+        $this->_data['agent'] = $agent;
+        return $this;
+    }
+    
+    public function getAgent()
+    {
+        return $this->_data['agent'];
+    }
+    
     public function toArray() {
         return $this->_data;
     }
