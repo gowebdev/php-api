@@ -121,7 +121,7 @@ class Profile
     
     public function getAgent()
     {
-        return $this->_data['agent'];
+        return isset($this->_data['agent']) ? $this->_data['agent'] : null;
     }
     
     public function toArray() {
