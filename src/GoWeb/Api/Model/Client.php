@@ -278,8 +278,7 @@ class Client extends \GoWeb\Api\Model
     
     public function isTester()
     {
-        $this->getProfile()->isTester();
-        return $this;
+        return $this->getProfile()->isTester();
     }
     
     /**
