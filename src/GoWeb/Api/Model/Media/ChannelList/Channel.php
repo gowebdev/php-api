@@ -63,4 +63,9 @@ class Channel extends \GoWeb\Api\Model
     {
         return isset($this->_data['hd']) && $this->_data['hd'];
     }
+    
+    public function getAgeLimit()
+    {
+        return isset($this->_data['age_limit']) ? (int) $this->_data['age_limit'] : null;
+    }
 }
