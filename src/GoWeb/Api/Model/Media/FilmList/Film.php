@@ -74,4 +74,9 @@ class Film extends \GoWeb\Api\Model
         return isset($this->_data['thumb']) ? $this->_data['thumb'] : null;
     }
     
+    public function getAgeLimit()
+    {
+        return isset($this->_data['age_limit']) ? (int) $this->_data['age_limit'] : null;
+    }
+    
 }
