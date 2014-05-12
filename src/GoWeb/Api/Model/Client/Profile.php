@@ -142,6 +142,6 @@ class Profile
     
     public function isTester()
     {
-        return (bool) $this->_data['tester'];
+        return isset($this->_data['tester']) && $this->_data['tester'];
     }
 }
