@@ -303,7 +303,7 @@ class Client extends \GoWeb\Api\Model
         return isset($this->_data['rechargePage']) ? $this->_data['rechargePage'] : null;
     }
     
-    public function getpfofilePageUrl()
+    public function getProfilePageUrl()
     {
         return isset($this->_data['profilePage']) ? $this->_data['profilePage'] : null;
     }
