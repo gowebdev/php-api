@@ -298,6 +298,11 @@ class Client extends \GoWeb\Api\Model
         throw new \Exception('Base service with specified id not found');
     }
     
+    public function getRechargePageUrl()
+    {
+        return isset($this->_data['rechargePage']) ? $this->_data['rechargePage'] : null;
+    }
+    
     public function toArray() {
         
         if($this->_profile) {
