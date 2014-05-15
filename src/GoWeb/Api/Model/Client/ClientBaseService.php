@@ -77,6 +77,11 @@ class ClientBaseService
         return $this; 
     }
     
+    public function isBaseServiceChanged($baseServiceId)
+    {
+        return !empty($this->_serviceSection['service_id_change']);
+    }
+    
     public function isActive()
     {
         return self::STATUS_ACTIVE == $this->_serviceSection['status'];
@@ -100,6 +105,11 @@ class ClientBaseService
     public function getChangedStatus()
     {
         return $this->_serviceSection['status_change'];
+    }
+    
+    public function isStatusChanged()
+    {
+        return !empty($this->_serviceSection['status_change']);
     }
     
     public function isCatchUpAllowed()
