@@ -67,7 +67,7 @@ class ClientAdditionalService
     
     public function getCost()
     {
-        return (float) $this->_serviceSection['cost'];
+        return isset($this->_serviceSection['cost']) ? (float) $this->_serviceSection['cost'] : null;
     }
     
     public function setCost($cost)

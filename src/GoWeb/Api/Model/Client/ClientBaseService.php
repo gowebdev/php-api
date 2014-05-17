@@ -145,7 +145,7 @@ class ClientBaseService
     
     public function getCost()
     {
-        return (float) $this->_serviceSection['cost'];
+        return isset($this->_serviceSection['cost']) ? (float) $this->_serviceSection['cost'] : null;
     }
     
     public function setCost($cost) {
@@ -232,6 +232,11 @@ class ClientBaseService
     
     private function recalcTotalCost()
     {
+        $baseCost = $this->getCost();
+        if(!$baseCost) {
+            return $this;
+        }
+        
         $this->_serviceSection['total_cost'] = $this->getCost();
         
         foreach($this->getAdditionalServices() as $additionalService) {
