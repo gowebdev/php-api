@@ -20,10 +20,6 @@ class ClientAdditionalService
     
     public function setId($id)
     {
-        if(!$this->_serviceSection['client_id']) {
-            throw new \Exception('Can\'t set id of new cleint\'s service');
-        }
-        
         $this->_serviceSection['id'] = (int) $id;
         return $this;
     }
@@ -35,10 +31,6 @@ class ClientAdditionalService
     
     public function setClientId($id)
     {
-        if(!$this->_serviceSection['id']) {
-            throw new \Exception('Client of existed service can\'t be modified');
-        }
-        
         $this->_serviceSection['client_id'] = (int) $id;
         return $this;
     }
