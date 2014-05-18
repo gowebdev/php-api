@@ -60,10 +60,15 @@ class ClientBaseService
         return $this->_serviceSection['custom_name'];
     }
     
-    public function setCustomName($customName)
+    public function setCustomName($name  = null)
     {
-        $this->_serviceSection['custom_name'] = $customName;
-        return $this; 
+        if($name) {
+            $this->_serviceSection['custom_name'] = $name;
+        } else {
+            unset($this->_serviceSection['custom_name']);
+        }
+        
+        return $this;
     }
     
     public function getBaseServiceId()

@@ -48,9 +48,14 @@ class ClientAdditionalService
         return $this->_serviceSection['name'];
     }
     
-    public function setCustomName($name)
+    public function setCustomName($name  = null)
     {
-        $this->_serviceSection['name'] = $name;
+        if($name) {
+            $this->_serviceSection['name'] = $name;
+        } else {
+            unset($this->_serviceSection['name']);
+        }
+        
         return $this;
     }
     
