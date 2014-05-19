@@ -174,6 +174,20 @@ class Client extends \GoWeb\Api\Model
         
         return $this->_data['baseServices'];
     }
+    
+    /**
+     * Get list of client's base service id
+     * @return array<integer>
+     */
+    public function getClientBaseServiceIdList()
+    {
+        $list = array();
+        foreach($this->_data['baseServices'] as $baseService) {
+            $list[] = $baseService['id'];
+        }
+        
+        return $list;
+    }
 
     /**
      * 
