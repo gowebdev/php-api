@@ -334,8 +334,4 @@ class Client extends \GoWeb\Api\Model
 
         return $this->_data;
     }
-    
-    public function toJson() {
-        return json_encode($this->toArray());
-    }
 }

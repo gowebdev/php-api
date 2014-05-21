@@ -12,5 +12,8 @@
         "psr-0": {
             "GoWeb": "src/"
         }
+    },
+    "require": {
+        "sokil/php-rest": "0.*"
     }
 }
