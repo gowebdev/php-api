@@ -2,35 +2,29 @@
 
 namespace GoWeb\Api\Model\Media\FilmCategories;
 
-use \GoWeb\Api\Model\Media\FilmCategories\Category\Genre;
-
 class Category extends \GoWeb\Api\Model 
 {
-    private $_initialised = false;
+    private $_genresIterator;
     
     public function getId()
     {
-        return $this->_data['id'];
+        return $this->get('id');
     }
     
     public function getName()
     {
-        return $this->_data['name'];
+        return $this->get('name');
     }
     
     public function getGenres()
     {
-        if($this->_initialised)
-            return $this->_data['genres'];
-        
-        foreach($this->_data['genres'] as $i => $genre)
-        {
-            $this->_data['genres'][$i] = new Genre($genre, $this->_clientAPI);
+        if($this->_genresIterator) {
+            return $this->_genresIterator;
         }
         
-        $this->_initialised = true;
+        $this->_genresIterator = $this->getObjectList('genres', '\GoWeb\Api\Model\Media\FilmCategories\Category\Genre');
         
-        return $this->_data['genres'];
+        return $this->_genresIterator;
     }
     
     /**

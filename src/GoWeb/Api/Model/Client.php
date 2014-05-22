@@ -36,12 +36,12 @@ class Client extends \GoWeb\Api\Model
     
     public function getToken()
     {
-        return $this->getParam('token');
+        return $this->get('token');
     }
 
     public function setToken( $token )
     {
-        $this->setParam('token', $token);
+        $this->set('token', $token);
     }
     
     /**
@@ -53,7 +53,7 @@ class Client extends \GoWeb\Api\Model
     public function getProfile()
     {
         if(!$this->_profile) {
-            $this->_profile = new Client\Profile($this->_data['profile']);
+            $this->_profile = new Client\Profile($this->get('profile'));
         }
         
         return $this->_profile;
@@ -66,7 +66,7 @@ class Client extends \GoWeb\Api\Model
     
     public function getPermanentId()
     {
-         return $this->getParam('permid');
+         return $this->get('permid');
     }
     
     public function getHash()
@@ -137,23 +137,25 @@ class Client extends \GoWeb\Api\Model
     }
     
     public function setBalance($ammount, $currency) {
-        $this->_data['balance'] = array(
+        $this->set('balance', array(
             'amount'    => $ammount,
             'currency'  => $currency,
-        );
+        ));
         
         return $this;
     }
     
     public function getBalance($key = null)
     {
-        if(!$this->_data['balance'])
+        if(!$this->get('balance')) {
             throw new \Exception('Balance section not specified');
+        }
         
-        if(!$key)
-            return $this->_data['balance'];
+        if(!$key) {
+            return $this->get('balance');
+        }
         
-        return isset($this->_data['balance'][$key]) ? $this->_data['balance'][$key] : null;
+        return $this->get('balance.' . $key);
     }
     
     public function getBalanceAmount()
@@ -168,16 +170,16 @@ class Client extends \GoWeb\Api\Model
     
     public function hasServices()
     {
-        return !empty($this->_data['baseServices']);
+        return (bool) $this->get('baseServices');
     }
     
     public function getClientBaseServicesAsArray()
     {
-        if(empty($this->_data['baseServices'])) {
-            $this->_data['baseServices'] = array();
+        if(!$this->get('baseServices')) {
+            return array();
         }
         
-        return $this->_data['baseServices'];
+        return $this->get('baseServices');
     }
     
     /**
@@ -187,7 +189,7 @@ class Client extends \GoWeb\Api\Model
     public function getClientBaseServiceIdList()
     {
         $list = array();
-        foreach($this->_data['baseServices'] as $baseService) {
+        foreach($this->getClientBaseServicesAsArray() as $baseService) {
             $list[] = $baseService['id'];
         }
         
@@ -234,15 +236,16 @@ class Client extends \GoWeb\Api\Model
     public function setActiveClientBaseServiceId($id)
     {        
         $id = (int) $id;
-        if(!$id)
+        if(!$id) {
             throw new \Exception('Wrong active client service id specified');
-
+        }
+        
         foreach($this->getClientBaseServices() as $baseService)
         {
             if($baseService->getId() != $id)
                 continue;
             
-            $this->_data['activeBaseService'] = $id;
+            $this->set('activeBaseService', $id);
             return;
         }
         
@@ -251,8 +254,7 @@ class Client extends \GoWeb\Api\Model
     
     public function getActiveClientBaseServiceId()
     {
-        if(!isset($this->_data['activeBaseService']))
-        {
+        if(!$this->get('activeBaseService')) {
             $baseClientServices = $this->getClientBaseServices();
             if(!$baseClientServices) {
                 return null;
@@ -269,10 +271,10 @@ class Client extends \GoWeb\Api\Model
                 }
             }
             
-            $this->_data['activeBaseService'] = $mostExpensiveBaseService->getId();
+            $this->set('activeBaseService', $mostExpensiveBaseService->getId());
         }
         
-        return $this->_data['activeBaseService'];
+        return $this->get('activeBaseService');
     }
     
     /**
@@ -319,24 +321,24 @@ class Client extends \GoWeb\Api\Model
     
     public function getRechargePageUrl()
     {
-        return isset($this->_data['rechargePage']) ? $this->_data['rechargePage'] : null;
+        return $this->get('rechargePage');
     }
     
     public function getProfilePageUrl()
     {
-        return isset($this->_data['profilePage']) ? $this->_data['profilePage'] : null;
+        return $this->get('profilePage');
     }
     
     public function toArray() {
         
         if($this->_profile) {
-            $this->_data['profile'] = $this->_profile->toArray();
+            $this->set('profile', $this->_profile->toArray());
         }
         
         if($this->_baseServices) {
-            $this->_data['baseServices'] = array_map(function($service) { return $service->toArray(); }, $this->_baseServices);
+            $this->set('baseServices', array_map(function($service) { return $service->toArray(); }, $this->_baseServices));
         }
 
-        return $this->_data;
+        return parent::toArray();
     }
 }

@@ -6,11 +6,11 @@ class Genre extends \GoWeb\Api\Model
 {
     public function getId()
     {
-        return $this->_data['id'];
+        return $this->get('id');
     }
     
     public function getName()
     {
-        return $this->_data['name'];
+        return $this->get('name');
     }
 }

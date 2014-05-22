@@ -6,66 +6,66 @@ class Channel extends \GoWeb\Api\Model
 {
     public function getTorrent()
     {
-        return isset($this->_data['torrent']) ? $this->_data['torrent'] : null;
+        return $this->get('torrent');
     }
     
     public function getUrl()
     {
-        return isset($this->_data['url']) ? $this->_data['url'] : null;
+        return $this->get('url');
     }
     
     public function getName()
     {
-        return isset($this->_data['name']) ? $this->_data['name'] : 'Unknown';
+        return $this->get('name', 'Unknown');
     }
     
     public function getLogo()
     {
-        return $this->_data['logo'];
+        return $this->get('logo');
     }
     
     public function getAlias()
     {
-        return $this->_data['alias'];
+        return $this->get('alias');
     }
     
     public function getXmltvId()
     {
-        return $this->_data['xmltv'];
+        return $this->get('xmltv');
     }
     
     public function getId()
     {
-        return $this->_data['channel_id'];
+        return $this->get('channel_id');
     }
     
     public function getGenre()
     {
-        return $this->_data['genre'];
+        return $this->get('genre');
     }
     
     public function getGenreId()
     {
-        return $this->_data['genre_id'];
+        return $this->get('genre_id');
     }
     
     public function isFavourite()
     {
-        return !empty($this->_data['fav']);
+        return (bool) $this->get('fav');
     }
     
     public function getNumber()
     {
-        return (int) $this->_data['number'];
+        return (int) $this->get('number');
     }
     
     public function isHD() 
     {
-        return isset($this->_data['hd']) && $this->_data['hd'];
+        return (bool) $this->get('hd');
     }
     
     public function getAgeLimit()
     {
-        return isset($this->_data['age_limit']) ? (int) $this->_data['age_limit'] : null;
+        return (bool) $this->get('age_limit');
     }
 }

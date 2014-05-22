@@ -2,51 +2,38 @@
 
 namespace GoWeb\Api\Model\Client;
 
-class Device
-{
-    private $_data = array();
-    
-    public function __construct(array $deviceSection = null)
-    {
-        if($deviceSection) {
-            $this->_data = $deviceSection;
-        }
-    }
-    
+class Device extends \Sokil\Rest\Transport\Structure
+{    
     public function getId()
     {
-        return $this->_data['id'];
+        return $this->get('id');
     }
     
     public function setId($id)
     {
-        $this->_data['id'] = (int) $id;
+        $this->set('id', (int) $id);
         return $this; 
     }
     
     public function getSerial()
     {
-        return $this->_data['serial'];
+        return $this->get('serial');
     }
     
     public function setSerial($serial)
     {
-        $this->_data['serial'] = $serial;
+        $this->set('serial', $serial);
         return $this; 
     }
     
     public function getMac()
     {
-        return $this->_data['mac'];
+        return $this->get('mac');
     }
     
     public function setMac($mac)
     {
-        $this->_data['mac'] = $mac;
+        $this->set('mac', $mac);
         return $this;
-    }
-    
-    public function toArray() {
-        return $this->_data;
     }
 }

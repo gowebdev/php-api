@@ -4,144 +4,132 @@ namespace GoWeb\Api\Model\Client;
 
 class Profile
 {
-    private $_data = array();
-    
-    public function __construct(array $data = null) {
-        
-        if($data) {
-            $this->_data = $data;
-        }
-    }
     
     public function setId($id) {
-        $this->_data['id'] = (int) $id;
+        $this->set('id', (int) $id);
         
         return $this;
     }
     
     public function getId() {
-        return isset($this->_data['id']) ? (int) $this->_data['id'] : null;
+        return $this->get('id') ? (int) $this->get('id') : null;
     }
     
     public function setEmail($email) {
-        $this->_data['email'] = $email;
+        $this->set('email', $email);
         
         return $this;
     }
     
     public function getEmail() {
-        return isset($this->_data['email']) ? $this->_data['email'] : null;
+        return $this->get('email');
     }
     
     public function setPassword($password) {
-        $this->_data['password'] = $password;
+        $this->set('password', $password);
         
         return $this;
     }
     
     public function getPassword() {
-        return isset($this->_data['password']) ? $this->_data['password'] : null;
+        return $this->get('password');
     }
     
     public function setHash($hash) {
-        $this->_data['hash'] = $hash;
+        $this->set('hash', $hash);
         
         return $this;
     }
     
     public function getHash() {
-        return isset($this->_data['hash']) ? $this->_data['hash'] : null;
+        return $this->get('hash');
     }
     
     public function setLastName($lastName) {
-        $this->_data['last_name'] = $lastName;
+        $this->set('last_name', $lastName);
         
         return $this;
     }
     
     public function getLastName() {
-        return $this->_data['last_name'];
+        return $this->get('last_name');
     }
     
     public function setFirstName($firstName) {
-        $this->_data['first_name'] = $firstName;
+        $this->set('first_name', $firstName);
         
         return $this;
     }
     
     public function getFirstName() {
-        return $this->_data['first_name'];
+        return $this->get('first_name');
     }
     
     public function setGender($gender) {
-        $this->_data['gender'] = $gender;
+        $this->set('gender', $gender);
         
         return $this;
     }
     
     public function getGender() {
-        return $this->_data['gender'];
+        return $this->get('gender');
     }
     
     public function setBirthday($birthday) {
-        $this->_data['birthday'] = $birthday;
+        $this->set('birthday', $birthday);
         
         return $this;
     }
     
     public function getBirthday() {
-        return $this->_data['birthday'];
+        return $this->get('birthday');
     }
     
     public function setContractNumber($contractNumber) {
-        $this->_data['contract_number'] = $contractNumber;
+        $this->set('contract_number', $contractNumber);
         
         return $this;
     }
     
     public function getContractNumber() {
-        return $this->_data['contract_number'];
+        return $this->get('contract_number');
     }
     
     public function setStatus($status) {
-        $this->_data['status'] = $status;
+        $this->set('status', $status);
         
         return $this;
     }
     
     public function getStatus() {
-        return $this->_data['status'];
+        return $this->get('status');
     }
     
     public function setAgent($agent)
     {
-        $this->_data['agent'] = $agent;
+        $this->set('agent', $agent);
         return $this;
     }
     
     public function getAgent()
     {
-        return isset($this->_data['agent']) ? $this->_data['agent'] : null;
-    }
-    
-    public function toArray() {
-        return $this->_data;
+        return $this->get('agent');
     }
     
     public function enableTester()
     {
-        $this->_data['tester'] = 1;
+        $this->set('tester', 1);
         return $this;
     }
     
     public function disableTester()
     {
-        $this->_data['tester'] = 0;
+        $this->set('tester', 0);
         return $this;
     }
     
     public function isTester()
     {
-        return isset($this->_data['tester']) && $this->_data['tester'];
+        return (bool) $this->get('tester');
     }
 }

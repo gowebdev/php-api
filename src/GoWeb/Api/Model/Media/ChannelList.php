@@ -2,60 +2,51 @@
 
 namespace GoWeb\Api\Model\Media;
 
-use \GoWeb\Api\Model\Media\ChannelList\Channel;
-
-class ChannelList extends \GoWeb\Api\Model implements \SeekableIterator, \Countable
-{    
-    private $_position;
-
+class ChannelList extends \Sokil\Rest\Transport\Structure implements \SeekableIterator, \Countable
+{
+    /**
+     *
+     * @var \Sokil\Rest\Transport\StructureList 
+     */
+    private $_channelsIterator;
+    
     public function init()
     {
-        if(!isset($this->_data['channels']))
-            throw new \Exception('Channels section not found');
+        $this->_channelsIterator = $this->getObjectList('channels', '\GoWeb\Api\Model\Media\ChannelList\Channel');
     }
     
     public function count()
     {
-        return count($this->_data['channels']);
+        return count($this->_channelsIterator);
     }
 
     public function seek($position)
     {
-        if (!isset($this->_data['channels'][$position]))
-        {
-            throw new \OutOfBoundsException("Invalid seek position ($position)");
-        }
-
-        $this->_position = $position;
+        $this->_channelsIterator->seek($position);
     }
 
     public function current()
     {
-        if ($this->_data['channels'][$this->_position] instanceof Channel)
-            return $this->_data['channels'][$this->_position];
-
-        $this->_data['channels'][$this->_position] = new Channel($this->_data['channels'][$this->_position], $this->_clientAPI);
-
-        return $this->_data['channels'][$this->_position];
+        return $this->_channelsIterator->current();
     }
 
     public function key()
     {
-        return $this->_position;
+        return $this->_channelsIterator->key();
     }
 
     public function next()
     {
-        ++$this->_position;
+        $this->_channelsIterator->next();
     }
 
     public function rewind()
     {
-        $this->_position = 0;
+        $this->_channelsIterator->rewind();
     }
 
     public function valid()
     {
-        return isset($this->_data['channels'][$this->_position]);
+        return $this->_channelsIterator->valid();
     }
 }

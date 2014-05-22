@@ -2,16 +2,13 @@
 
 namespace GoWeb\Api\Model\Media;
 
-use \GoWeb\Api\Model\Media\FilmCategories\Category;
-
-class FilmCategories extends \GoWeb\Api\Model implements \SeekableIterator, \Countable
+class FilmCategories extends \Sokil\Rest\Transport\Structure implements \SeekableIterator, \Countable
 {    
-    private $_position;
+    private $_filmCategoriesIterator;
 
     public function init()
     {
-        if(!isset($this->_data['categories']))
-            throw new \Exception('Categories was not found');
+        $this->_filmCategoriesIterator = $this->getObjectList('categories', '\GoWeb\Api\Model\Media\FilmCategories\Category');
     }
     
     /**
@@ -22,10 +19,8 @@ class FilmCategories extends \GoWeb\Api\Model implements \SeekableIterator, \Cou
      */
     public function getCategory($categoryId)
     {
-        foreach($this as $category)
-        {
-            if($category->getId() == $categoryId)
-            {
+        foreach($this->_filmCategoriesIterator as $category) {
+            if($category->getId() == $categoryId) {
                 return $category;
             }
         }
@@ -42,48 +37,36 @@ class FilmCategories extends \GoWeb\Api\Model implements \SeekableIterator, \Cou
     
     public function count()
     {
-        return count($this->_data['categories']);
+        return count($this->_filmCategoriesIterator);
     }
 
     public function seek($position)
     {
-        if (!isset($this->_data['categories'][$position]))
-        {
-            throw new \OutOfBoundsException("Invalid seek position ($position)");
-        }
-
-        $this->_position = $position;
+        $this->_filmCategoriesIterator->seek($position);
     }
 
     public function current()
     {
-        if ($this->_data['categories'][$this->_position] instanceof Category)
-        {
-            return $this->_data['categories'][$this->_position];
-        }
-
-        $this->_data['categories'][$this->_position] = new Category($this->_data['categories'][$this->_position], $this->_clientAPI);
-
-        return $this->_data['categories'][$this->_position];
+        return $this->_filmCategoriesIterator->current();
     }
 
     public function key()
     {
-        return $this->_position;
+        return $this->_filmCategoriesIterator->key();
     }
 
     public function next()
     {
-        ++$this->_position;
+        $this->_filmCategoriesIterator->next();
     }
 
     public function rewind()
     {
-        $this->_position = 0;
+        $this->_filmCategoriesIterator->rewind();
     }
 
     public function valid()
     {
-        return isset($this->_data['categories'][$this->_position]);
+        return $this->_filmCategoriesIterator->valid();
     }
 }

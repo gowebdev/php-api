@@ -3,80 +3,75 @@
 namespace GoWeb\Api\Model\Media\FilmList;
 
 class Film extends \GoWeb\Api\Model 
-{
-    private $_genres = array();
-    
-    public function getID()
+{    
+    public function getId()
     {
-        if( !isset($this->_data['id']) )
-            throw new Exception ('Id of object is not correct');
-        
-        return $this->_data['id'];
+        return $this->get('id');
     }
     
     public function getName()
     {
-        return isset($this->_data['name']) ? $this->_data['name'] : null;
+        return $this->get('name');
     }
     
     public function getDescription()
     {
-        return isset($this->_data['description']) ? $this->_data['description'] : null;
+        return $this->get('description');
     }
     
     public function getYear()
     {
-        return isset($this->_data['year']) ? $this->_data['year'] : null;
+        return $this->get('year');
     }
     
     public function getDirector()
     {
-        return isset($this->_data['director']) ? $this->_data['director'] : null;
+        return $this->get('director');
     }
     
     public function getActors()
     {
-        return isset($this->_data['actors']) ? $this->_data['actors'] : null;
+        return $this->get('actors');
     }
     
     public function getCountry()
     {
-        return isset($this->_data['country']) ? $this->_data['country'] : null;
+        return $this->get('country');
     }
     
     public function getGenreIdList()
     {
-        return isset($this->_data['genres']) ? $this->_data['genres'] : array();
+        return $this->get('genres', []);
     }
     
     public function getCategoryId()
     {
-        return isset($this->_data['category']) ? (int) $this->_data['category'] : null;
+        return $this->get('category');
     }
     
     public function getDuration()
     {
-        return isset($this->_data['duration']) ? $this->_data['duration'] : null;
+        return $this->get('duration');
     }
     
     public function getUrl()
     {
-        return isset($this->_data['url']) ? $this->_data['url'] : null;
+        return $this->get('url');
     }
     
     public function getTorrent()
     {
-        return isset($this->_data['torrent']) ? $this->_data['torrent'] : null;
+        return $this->get('torrent');
     }
     
     public function getPoster()
     {
-        return isset($this->_data['thumb']) ? $this->_data['thumb'] : null;
+        return $this->get('thumbn');
     }
     
     public function getAgeLimit()
     {
-        return isset($this->_data['age_limit']) ? (int) $this->_data['age_limit'] : null;
+        return $this->get('age_limit');
     }
     
 }

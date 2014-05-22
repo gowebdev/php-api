@@ -6,17 +6,17 @@ class Program extends \GoWeb\Api\Model
 {
     public function getName()
     {
-        return $this->_data['name'];
+        return $this->get('name');
     }
     
     public function getStartTime($format = null)
     {
-        return $format ? date($format, $this->_data['from']) : (int) $this->_data['from'];
+        return $format ? date($format, $this->get('from')) : (int) $this->get('from');
     }
     
     public function getFinishTime($format = null)
     {
-        return $format ? date($format, $this->_data['to']) : (int) $this->_data['to'];
+        return $format ? date($format, $this->get('to')) : (int) $this->get('to');
     }
     
     public function isFinished()
@@ -26,17 +26,19 @@ class Program extends \GoWeb\Api\Model
     
     public function getUrl()
     {
-        if(!$this->isFinished())
+        if(!$this->isFinished()) {
             return null;
+        }
         
-        return isset($this->_data['url']) ? $this->_data['url'] : null;
+        return $this->get('url');
     }
     
     public function getTorrent()
     {
-        if(!$this->isFinished())
+        if(!$this->isFinished()) {
             return null;
+        }
         
-        return isset($this->_data['torrent']) ? $this->_data['torrent'] : null;
+        return $this->get('torrent');
     }
 }

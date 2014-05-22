@@ -2,64 +2,47 @@
 
 namespace GoWeb\Api\Model\Media;
 
-use GoWeb\Api\Model\Media\FilmList\Film;
-
-class FilmList extends \GoWeb\Api\Model implements \SeekableIterator, \Countable
+class FilmList extends \Sokil\Rest\Transport\Structure implements \SeekableIterator, \Countable
 {    
-    private $_position = 0;
-
+    private $_listIterator;
+    
     public function init()
     {
-
+        $this->_listIterator = $this->getObjectList('items', '\GoWeb\Api\Model\Media\FilmList\Film');
     }
     
     public function count()
     {
-        return count($this->_data['items']);
+        return count($this->_listIterator);
     }
 
     public function seek($position)
     {
-        if (!isset($this->_data['items'][$position]))
-        {
-            throw new \OutOfBoundsException("Invalid seek position ($position)");
-        }
-
-        $this->_position = $position;
+        $this->_listIterator->seek($position);
     }
 
     public function current()
     {
-        if(empty($this->_data['items'][$this->_position])) {
-            return null;
-        }
-        
-        if($this->_data['items'][$this->_position] instanceof Film) {
-            return $this->_data['items'][$this->_position];
-        }
-
-        $this->_data['items'][$this->_position] = new Film($this->_data['items'][$this->_position], $this->_clientAPI);
-
-        return $this->_data['items'][$this->_position];
+        return $this->_listIterator->current();
     }
 
     public function key()
     {
-        return $this->_position;
+        return $this->_listIterator->key();
     }
 
     public function next()
     {
-        ++$this->_position;
+        $this->_listIterator->next();
     }
 
     public function rewind()
     {
-        $this->_position = 0;
+        $this->_listIterator->rewind();
     }
 
     public function valid()
     {
-        return isset($this->_data['items'][$this->_position]);
+        return $this->_listIterator->valid();
     }
 }
