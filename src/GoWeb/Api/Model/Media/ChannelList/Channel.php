@@ -2,7 +2,7 @@
 
 namespace GoWeb\Api\Model\Media\ChannelList;
 
-class Channel extends \GoWeb\Api\Model 
+class Channel extends \Sokil\Rest\Transport\Structure
 {
     public function getTorrent()
     {

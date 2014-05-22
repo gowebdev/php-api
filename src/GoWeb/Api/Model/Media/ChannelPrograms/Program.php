@@ -2,7 +2,7 @@
 
 namespace GoWeb\Api\Model\Media\ChannelPrograms;
 
-class Program extends \GoWeb\Api\Model
+class Program extends \Sokil\Rest\Transport\Structure
 {
     public function getName()
     {

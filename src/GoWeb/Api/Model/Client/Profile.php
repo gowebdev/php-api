@@ -2,7 +2,7 @@
 
 namespace GoWeb\Api\Model\Client;
 
-class Profile
+class Profile extends \Sokil\Rest\Transport\Structure
 {
     
     public function setId($id) {

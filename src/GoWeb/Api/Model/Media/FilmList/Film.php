@@ -2,7 +2,7 @@
 
 namespace GoWeb\Api\Model\Media\FilmList;
 
-class Film extends \GoWeb\Api\Model 
+class Film extends \Sokil\Rest\Transport\Structure
 {    
     public function getId()
     {

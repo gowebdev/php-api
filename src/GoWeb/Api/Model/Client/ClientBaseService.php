@@ -2,9 +2,9 @@
 
 namespace GoWeb\Api\Model\Client;
 
-class ClientBaseService
+class ClientBaseService extends \Sokil\Rest\Transport\Structure
 {
-    private $_serviceSection = array();
+    private $_data = array();
     
     private $_additionalServices = array();
     
@@ -15,57 +15,50 @@ class ClientBaseService
     const STATUS_BLOCKED    = 'BLOCKED';
     const STATUS_CLOSED     = 'CLOSED';
     
-    public function __construct(array $serviceSection = null)
-    {
-        if($serviceSection) {
-            $this->_serviceSection = $serviceSection;
-        }
-    }
-    
     public function getId()
     {
-        return (int) $this->_serviceSection['id'];
+        return (int) $this->get('id');
     }
     
     public function setId($id)
     {        
-        $this->_serviceSection['id'] = (int) $id;
+        $this->set('id', (int) $id);
         return $this;
     }
     
     public function getClientId()
     {
-        return (int) $this->_serviceSection['client_id'];
+        return (int) $this->get('client_id');
     }
     
     public function setClientId($id)
     {        
-        $this->_serviceSection['client_id'] = (int) $id;
+        $this->set('client_id', (int) $id);
         return $this;
     }
     
     public function getName()
     {
-        return $this->_serviceSection['name'];
+        return $this->get('name');
     }
     
     public function setName($name)
     {
-        $this->_serviceSection['name'] = $name;
+        $this->set('name', $name);
         return $this; 
     }
     
     public function getCustomName()
     {
-        return $this->_serviceSection['custom_name'];
+        return $this->get('custom_name');
     }
     
     public function setCustomName($name  = null)
     {
         if($name) {
-            $this->_serviceSection['custom_name'] = $name;
+            $this->set('custom_name', $name);
         } else {
-            unset($this->_serviceSection['custom_name']);
+            $this->remove('custom_name');
         }
         
         return $this;
@@ -73,95 +66,95 @@ class ClientBaseService
     
     public function getBaseServiceId()
     {
-        return (int) $this->_serviceSection['service_id'];
+        return (int) $this->get('service_id');
     }
     
     public function setBaseServiceId($baseServiceId)
     {
-        $this->_serviceSection['service_id'] = (int) $baseServiceId;
+        $this->set('service_id', (int) $baseServiceId);
         return $this; 
     }
     
     public function getChangedBaseServiceId()
     {
-        return (int) $this->_serviceSection['service_id_change'];
+        return (int) $this->get('service_id_change');
     }
     
     public function setChangedBaseServiceId($baseServiceId)
     {
-        $this->_serviceSection['service_id_change'] = (int) $baseServiceId;
+        $this->set('service_id_change', (int) $baseServiceId);
         return $this; 
     }
     
     public function isBaseServiceChanged($baseServiceId)
     {
-        return !empty($this->_serviceSection['service_id_change']);
+        return (bool) $this->get('service_id_change');
     }
     
     public function isActive()
     {
-        return self::STATUS_ACTIVE == $this->_serviceSection['status'];
+        return self::STATUS_ACTIVE == $this->_data['status'];
     }
     
     public function setStatus($status) {
-        $this->_serviceSection['status'] = $status;
+        $this->set('status', $status);
         return $this;
     }
     
     public function getStatus()
     {
-        return $this->_serviceSection['status'];
+        return $this->get('status');
     }
     
     public function setChangedStatus($status) {
-        $this->_serviceSection['status_change'] = $status;
+        $this->set('status_change', $status);
         return $this;
     }
     
     public function getChangedStatus()
     {
-        return $this->_serviceSection['status_change'];
+        return $this->get('status_change');
     }
     
     public function isStatusChanged()
     {
-        return !empty($this->_serviceSection['status_change']);
+        return (bool) $this->get('status_change');
     }
     
     public function isCatchUpAllowed()
     {
-        return !empty($this->_serviceSection['catchup']);
+        return (bool) $this->get('catchup');
     }
     
     public function setCatchUpAllowed($allowed = true) {
-        $this->_serviceSection['catchup'] = (int) $allowed;
+        $this->set('catchup', (int) $allowed);
         return $this;
     }
     
     public function isAdAllowed()
     {
-        return !empty($this->_serviceSection['ad']);
+        return (bool) $this->get('ad');
     }
     
     public function setAdAllowed($allowed = true) {
-        $this->_serviceSection['ad'] = (int) $allowed;
+        $this->set('ad', (int) $allowed);
         return $this;
     }
     
     public function getCost()
     {
-        return isset($this->_serviceSection['cost']) ? (float) $this->_serviceSection['cost'] : null;
+        return $this->get('cost');
     }
     
     public function setCost($cost) {
-        $this->_serviceSection['cost'] = (float) $cost;
-        $this->_serviceSection['total_cost'] = null;
+        $this->set('cost', (float) $cost);
+        $this->set('total_cost', null);
         return $this;
     }
     
     public function hasLinkedDevice()
     {
-        return !empty($this->_serviceSection['stb']);
+        return (bool) $this->get('stb');
     }
     
     /**
@@ -179,14 +172,14 @@ class ClientBaseService
             throw new \Exception('Device not linked');
         }
         
-        $this->_linkedDevice = new Device($this->_serviceSection['stb']);
+        $this->_linkedDevice = new Device($this->get('stb'));
         
         return $this->_linkedDevice;
     }
     
     public function setLinkedDevice(Device $device) {
         $this->_linkedDevice = $device;
-        $this->_serviceSection['stb'] = $device->toArray();
+        $this->set('stb', $device->toArray());
         return $this;
     }
     
@@ -196,10 +189,12 @@ class ClientBaseService
             return $this->_additionalServices;
         }
         
-        if(!empty($this->_serviceSection['additional'])) {
+        $additionalServices = $this->get('additional');
+        
+        if($additionalServices) {
             $this->_additionalServices = array_map(function($additionalServiceSection) {
                 return new ClientAdditionalService($additionalServiceSection);
-            }, $this->_serviceSection['additional']);
+            }, $additionalServices);
         }
         else
         {
@@ -211,7 +206,7 @@ class ClientBaseService
     
     public function addAdditionalService(ClientAdditionalService $service) {
         $this->_additionalServices[] = $service;
-        $this->_serviceSection['total_cost'] = null;
+        $this->set('total_cost', null);
         
         return $this;
     }
@@ -226,8 +221,10 @@ class ClientBaseService
         
         $list[] = $this->getBaseServiceId();
         
-        if(!empty($this->_serviceSection['additional'])) {
-            foreach($this->_serviceSection['additional'] as $additionalService) {
+        $additionalServices = $this->get('additional');
+        
+        if($additionalServices) {
+            foreach($additionalServices as $additionalService) {
                 $list[] = $additionalService['service_id'];
             }
         }
@@ -242,31 +239,33 @@ class ClientBaseService
             return $this;
         }
         
-        $this->_serviceSection['total_cost'] = $this->getCost();
+        $totalCost = $this->getCost();
         
         foreach($this->getAdditionalServices() as $additionalService) {
-            $this->_serviceSection['total_cost'] += $additionalService->getCost();
+            $totalCost += $additionalService->getCost();
         }
+        
+        $this->set('total_cost', $totalCost);
         
         return $this;
     }
     
     public function getTotalCost() {
-        if(empty($this->_serviceSection['total_cost'])) {
+        if(!$this->get('total_cost')) {
             $this->recalcTotalCost();
         }
-        return $this->_serviceSection['total_cost'];
+        return $this->get('total_cost');
     }
     
     public function toArray() {
-        if(empty($this->_serviceSection['total_cost'])) {
+        if(!$this->get('total_cost')) {
             $this->recalcTotalCost();
         }
         
         if($this->_additionalServices) {
-            $this->_serviceSection['additional'] = array_map(function($service) { return $service->toArray(); }, $this->_additionalServices);
+            $this->set('additional', array_map(function($service) { return $service->toArray(); }, $this->_additionalServices));
         }
         
-        return $this->_serviceSection;
+        return parent::toArray();
     }
 }

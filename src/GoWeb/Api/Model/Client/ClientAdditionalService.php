@@ -2,50 +2,42 @@
 
 namespace GoWeb\Api\Model\Client;
 
-class ClientAdditionalService
+class ClientAdditionalService extends \Sokil\Rest\Transport\Structure
 {
-    private $_serviceSection = array();
-    
-    public function __construct(array $serviceSection = null)
-    {
-        if($serviceSection) {
-            $this->_serviceSection = $serviceSection;
-        }
-    }
-    
+   
     public function getId()
     {
-        return (int) $this->_serviceSection['id'];
+        return (int) $this->get('id');
     }
     
     public function setId($id)
     {
-        $this->_serviceSection['id'] = (int) $id;
+        $this->set('id', (int) $id);
         return $this;
     }
     
     public function getClientId()
     {
-        return (int) $this->_serviceSection['client_id'];
+        return (int) $this->get('client_id');
     }
     
     public function setClientId($id)
     {
-        $this->_serviceSection['client_id'] = (int) $id;
+        $this->set('client_id', (int) $id);
         return $this;
     }
     
     public function getCustomName()
     {
-        return $this->_serviceSection['name'];
+        return $this->get('name');
     }
     
     public function setCustomName($name  = null)
     {
         if($name) {
-            $this->_serviceSection['name'] = $name;
+            $this->set('name', $name);
         } else {
-            unset($this->_serviceSection['name']);
+            $this->remove('name');
         }
         
         return $this;
@@ -53,27 +45,23 @@ class ClientAdditionalService
     
     public function getAdditionalServiceId()
     {
-        return $this->_serviceSection['service_id'];
+        return $this->get('service_id');
     }
     
     public function setAdditionalServiceId($id)
     {
-        $this->_serviceSection['service_id'] = (int) $id;
+        $this->get('service_id', (int) $id);
         return $this; 
     }
     
     public function getCost()
     {
-        return isset($this->_serviceSection['cost']) ? (float) $this->_serviceSection['cost'] : null;
+        return $this->get('cost');
     }
     
     public function setCost($cost)
     {
-        $this->_serviceSection['cost'] = (float) $cost;
+        $this->set('cost', (float) $cost);
         return $this;
-    }
-    
-    public function toArray() {
-        return $this->_serviceSection;
     }
 }

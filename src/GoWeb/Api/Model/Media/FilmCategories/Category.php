@@ -2,7 +2,7 @@
 
 namespace GoWeb\Api\Model\Media\FilmCategories;
 
-class Category extends \GoWeb\Api\Model 
+class Category extends \Sokil\Rest\Transport\Structure
 {
     private $_genresIterator;
     

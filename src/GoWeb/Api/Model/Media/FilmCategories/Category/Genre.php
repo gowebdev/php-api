@@ -2,7 +2,7 @@
 
 namespace GoWeb\Api\Model\Media\FilmCategories\Category;
 
-class Genre extends \GoWeb\Api\Model
+class Genre extends \Sokil\Rest\Transport\Structure
 {
     public function getId()
     {
