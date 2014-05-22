@@ -2,13 +2,17 @@
 
 namespace GoWeb\Api\Model\Media;
 
-class FilmCategories extends \Sokil\Rest\Transport\Structure implements \SeekableIterator, \Countable
+class FilmCategories extends \Sokil\Rest\Transport\Structure implements \SeekableIterator, \Countable, \IteratorAggregate
 {    
-    private $_filmCategoriesIterator;
-
-    public function init()
+    private $_listIterator;
+    
+    protected function getIterator()
     {
-        $this->_filmCategoriesIterator = $this->getObjectList('categories', '\GoWeb\Api\Model\Media\FilmCategories\Category');
+        if(!$this->_listIterator) {
+            $this->_listIterator = $this->getObjectList('categories', '\GoWeb\Api\Model\Media\FilmCategories\Category');
+        }
+        
+        return $this->_listIterator;
     }
     
     /**
@@ -19,7 +23,7 @@ class FilmCategories extends \Sokil\Rest\Transport\Structure implements \Seekabl
      */
     public function getCategory($categoryId)
     {
-        foreach($this->_filmCategoriesIterator as $category) {
+        foreach($this->getIterator() as $category) {
             if($category->getId() == $categoryId) {
                 return $category;
             }
@@ -37,36 +41,36 @@ class FilmCategories extends \Sokil\Rest\Transport\Structure implements \Seekabl
     
     public function count()
     {
-        return count($this->_filmCategoriesIterator);
+        return count($this->getIterator());
     }
 
     public function seek($position)
     {
-        $this->_filmCategoriesIterator->seek($position);
+        $this->getIterator()->seek($position);
     }
 
     public function current()
     {
-        return $this->_filmCategoriesIterator->current();
+        return $this->getIterator()->current();
     }
 
     public function key()
     {
-        return $this->_filmCategoriesIterator->key();
+        return $this->getIterator()->key();
     }
 
     public function next()
     {
-        $this->_filmCategoriesIterator->next();
+        $this->getIterator()->next();
     }
 
     public function rewind()
     {
-        $this->_filmCategoriesIterator->rewind();
+        $this->getIterator()->rewind();
     }
 
     public function valid()
     {
-        return $this->_filmCategoriesIterator->valid();
+        return $this->getIterator()->valid();
     }
 }

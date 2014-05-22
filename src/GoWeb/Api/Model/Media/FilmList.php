@@ -2,47 +2,52 @@
 
 namespace GoWeb\Api\Model\Media;
 
-class FilmList extends \Sokil\Rest\Transport\Structure implements \SeekableIterator, \Countable
+class FilmList extends \Sokil\Rest\Transport\Structure implements \SeekableIterator, \Countable, \IteratorAggregate
 {    
     private $_listIterator;
     
-    public function init()
+    protected function getIterator()
     {
-        $this->_listIterator = $this->getObjectList('items', '\GoWeb\Api\Model\Media\FilmList\Film');
+        if(!$this->_listIterator) {
+            $this->_listIterator = $this->getObjectList('items', '\GoWeb\Api\Model\Media\FilmList\Film');
+        }
+        
+        return $this->_listIterator;
+        
     }
     
     public function count()
     {
-        return count($this->_listIterator);
+        return count($this->getIterator());
     }
 
     public function seek($position)
     {
-        $this->_listIterator->seek($position);
+        $this->getIterator()->seek($position);
     }
 
     public function current()
     {
-        return $this->_listIterator->current();
+        return $this->getIterator()->current();
     }
 
     public function key()
     {
-        return $this->_listIterator->key();
+        return $this->getIterator()->key();
     }
 
     public function next()
     {
-        $this->_listIterator->next();
+        $this->getIterator()->next();
     }
 
     public function rewind()
     {
-        $this->_listIterator->rewind();
+        $this->getIterator()->rewind();
     }
 
     public function valid()
     {
-        return $this->_listIterator->valid();
+        return $this->getIterator()->valid();
     }
 }

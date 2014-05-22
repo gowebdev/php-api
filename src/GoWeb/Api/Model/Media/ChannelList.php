@@ -2,51 +2,52 @@
 
 namespace GoWeb\Api\Model\Media;
 
-class ChannelList extends \Sokil\Rest\Transport\Structure implements \SeekableIterator, \Countable
+class ChannelList extends \Sokil\Rest\Transport\Structure implements \SeekableIterator, \Countable, \IteratorAggregate
 {
-    /**
-     *
-     * @var \Sokil\Rest\Transport\StructureList 
-     */
-    private $_channelsIterator;
+    private $_listIterator;
     
-    public function init()
+    protected function getIterator()
     {
-        $this->_channelsIterator = $this->getObjectList('channels', '\GoWeb\Api\Model\Media\ChannelList\Channel');
+        if(!$this->_listIterator) {
+            $this->_listIterator = $this->getObjectList('channels', '\GoWeb\Api\Model\Media\ChannelList\Channel');
+        }
+        
+        return $this->_listIterator;
+        
     }
     
     public function count()
     {
-        return count($this->_channelsIterator);
+        return count($this->getIterator());
     }
 
     public function seek($position)
     {
-        $this->_channelsIterator->seek($position);
+        $this->getIterator()->seek($position);
     }
 
     public function current()
     {
-        return $this->_channelsIterator->current();
+        return $this->getIterator()->current();
     }
 
     public function key()
     {
-        return $this->_channelsIterator->key();
+        return $this->getIterator()->key();
     }
 
     public function next()
     {
-        $this->_channelsIterator->next();
+        $this->getIterator()->next();
     }
 
     public function rewind()
     {
-        $this->_channelsIterator->rewind();
+        $this->getIterator()->rewind();
     }
 
     public function valid()
     {
-        return $this->_channelsIterator->valid();
+        return $this->getIterator()->valid();
     }
 }
