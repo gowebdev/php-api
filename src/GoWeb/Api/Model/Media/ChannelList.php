@@ -6,7 +6,7 @@ class ChannelList extends \Sokil\Rest\Transport\Structure implements \SeekableIt
 {
     private $_listIterator;
     
-    protected function getIterator()
+    public function getIterator()
     {
         if(!$this->_listIterator) {
             $this->_listIterator = $this->getObjectList('channels', '\GoWeb\Api\Model\Media\ChannelList\Channel');

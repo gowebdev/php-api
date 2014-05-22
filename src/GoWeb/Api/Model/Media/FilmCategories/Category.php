@@ -18,11 +18,9 @@ class Category extends \Sokil\Rest\Transport\Structure
     
     public function getGenres()
     {
-        if($this->_genresIterator) {
-            return $this->_genresIterator;
+        if(!$this->_genresIterator) {
+            $this->_genresIterator = $this->getObjectList('genres', '\GoWeb\Api\Model\Media\FilmCategories\Category\Genre');
         }
-        
-        $this->_genresIterator = $this->getObjectList('genres', '\GoWeb\Api\Model\Media\FilmCategories\Category\Genre');
         
         return $this->_genresIterator;
     }

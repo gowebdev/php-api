@@ -6,7 +6,7 @@ class FilmList extends \Sokil\Rest\Transport\Structure implements \SeekableItera
 {    
     private $_listIterator;
     
-    protected function getIterator()
+    public function getIterator()
     {
         if(!$this->_listIterator) {
             $this->_listIterator = $this->getObjectList('items', '\GoWeb\Api\Model\Media\FilmList\Film');

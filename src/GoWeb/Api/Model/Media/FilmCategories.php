@@ -6,7 +6,7 @@ class FilmCategories extends \Sokil\Rest\Transport\Structure implements \Seekabl
 {    
     private $_listIterator;
     
-    protected function getIterator()
+    public function getIterator()
     {
         if(!$this->_listIterator) {
             $this->_listIterator = $this->getObjectList('categories', '\GoWeb\Api\Model\Media\FilmCategories\Category');
