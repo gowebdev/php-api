@@ -2,7 +2,7 @@
 
 namespace GoWeb\Api\Model\Media;
 
-class ChannelList extends \Sokil\Rest\Transport\Structure implements \SeekableIterator, \Countable, \IteratorAggregate
+class ChannelList extends \Sokil\Rest\Transport\Structure implements \SeekableIterator, \Countable
 {
     private $_listIterator;
     
