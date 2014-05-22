@@ -23,6 +23,11 @@ class Client extends \GoWeb\Api\Model
      */
     private $_baseServices = array();
     
+    public function __destruct()
+    {
+        $this->_profile = null;
+    }
+    
     public function __clone() {
         if($this->_profile) {
             $this->_profile = clone $this->_profile;
