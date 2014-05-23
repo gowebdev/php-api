@@ -3,9 +3,7 @@
 namespace GoWeb\Api\Model\Client;
 
 class ClientBaseService extends \Sokil\Rest\Transport\Structure
-{
-    private $_data = array();
-    
+{    
     private $_additionalServices = array();
     
     private $_linkedDevice;
@@ -93,7 +91,7 @@ class ClientBaseService extends \Sokil\Rest\Transport\Structure
     
     public function isActive()
     {
-        return self::STATUS_ACTIVE == $this->_data['status'];
+        return self::STATUS_ACTIVE == $this->getStatus();
     }
     
     public function setStatus($status) {
