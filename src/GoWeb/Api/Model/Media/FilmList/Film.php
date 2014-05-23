@@ -41,7 +41,7 @@ class Film extends \Sokil\Rest\Transport\Structure
     
     public function getGenreIdList()
     {
-        return $this->get('genres', []);
+        return $this->get('genres', array());
     }
     
     public function getCategoryId()
