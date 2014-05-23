@@ -66,7 +66,7 @@ class Film extends \Sokil\Rest\Transport\Structure
     
     public function getPoster()
     {
-        return $this->get('thumbn');
+        return $this->get('thumb');
     }
     
     public function getAgeLimit()
