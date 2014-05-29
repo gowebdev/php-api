@@ -50,7 +50,7 @@ class ClientAdditionalService extends \Sokil\Rest\Transport\Structure
     
     public function setAdditionalServiceId($id)
     {
-        $this->get('service_id', (int) $id);
+        $this->set('service_id', (int) $id);
         return $this; 
     }
     
