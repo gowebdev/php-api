@@ -177,7 +177,6 @@ class ClientBaseService extends \Sokil\Rest\Transport\Structure
     
     public function setLinkedDevice(Device $device) {
         $this->_linkedDevice = $device;
-        $this->set('stb', $device->toArray());
         return $this;
     }
     
@@ -207,21 +206,6 @@ class ClientBaseService extends \Sokil\Rest\Transport\Structure
         $this->set('total_cost', null);
         
         return $this;
-    }
-    
-    public function hasAdditionalService($clientAdditionalServiceId)
-    {
-        $has = false;
-        foreach($this->getAdditionalServices() as $additionalService)
-        {
-            /* @var $additionalService \GoWeb\Api\Model\Client\ClientAdditionalService */
-            if($additionalService->getId() === (int) $clientAdditionalServiceId) {
-                $has = true;
-                break;
-            }
-        }
-        
-        return $has;
     }
     
     /**
@@ -277,6 +261,10 @@ class ClientBaseService extends \Sokil\Rest\Transport\Structure
         
         if($this->_additionalServices) {
             $this->set('additional', array_map(function($service) { return $service->toArray(); }, $this->_additionalServices));
+        }
+        
+        if($this->_linkedDevice) {
+            $this->set('stb', $this->_linkedDevice->toArray());
         }
         
         return parent::toArray();
