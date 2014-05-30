@@ -209,6 +209,21 @@ class ClientBaseService extends \Sokil\Rest\Transport\Structure
         return $this;
     }
     
+    public function hasAdditionalService($clientAdditionalServiceId)
+    {
+        $has = false;
+        foreach($this->getAdditionalServices() as $additionalService)
+        {
+            /* @var $additionalService \GoWeb\Api\Model\Client\ClientAdditionalService */
+            if($additionalService->getId() === (int) $clientAdditionalServiceId) {
+                $has = true;
+                break;
+            }
+        }
+        
+        return $has;
+    }
+    
     /**
      * Get list of base and all additional services
      * 
