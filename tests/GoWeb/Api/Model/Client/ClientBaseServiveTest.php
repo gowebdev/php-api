@@ -27,4 +27,32 @@ class ClientBaseServiceTest extends \PHPUnit_Framework_TestCase
             )
         ), $clientBaseService->toArray());
     }
+    
+    public function testTotalCost()
+    {
+        $clientBaseService = new ClientBaseService;
+        
+        // no cost defined
+        $this->assertEquals(['total_cost' => 0], $clientBaseService->toArray());
+        
+        // define base cost
+        $clientBaseService->setCost(12);
+        $this->assertEquals([
+            'cost'          => 12,
+            'total_cost'    => 12
+        ], $clientBaseService->toArray());
+        
+        // define additional cost
+        $additionalService = new ClientAdditionalService;
+        $additionalService->setCost(15);
+        
+        $clientBaseService->addAdditionalService($additionalService);
+        $this->assertEquals([
+            'cost'          => 12,
+            'total_cost'    => 27,
+            'additional'    => [
+                ['cost'  => 15],
+            ],
+        ], $clientBaseService->toArray());
+    }
 }

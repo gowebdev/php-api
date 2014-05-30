@@ -141,7 +141,7 @@ class ClientBaseService extends \Sokil\Rest\Transport\Structure
     
     public function getCost()
     {
-        return $this->get('cost');
+        return (int) $this->get('cost');
     }
     
     public function setCost($cost) {
@@ -231,17 +231,15 @@ class ClientBaseService extends \Sokil\Rest\Transport\Structure
     
     private function recalcTotalCost()
     {
-        $baseCost = $this->getCost();
-        if(!$baseCost) {
-            return $this;
-        }
-        
+        // base
         $totalCost = $this->getCost();
         
+        // additional
         foreach($this->getAdditionalServices() as $additionalService) {
             $totalCost += $additionalService->getCost();
         }
         
+        // define
         $this->set('total_cost', $totalCost);
         
         return $this;
@@ -251,6 +249,7 @@ class ClientBaseService extends \Sokil\Rest\Transport\Structure
         if(!$this->get('total_cost')) {
             $this->recalcTotalCost();
         }
+        
         return $this->get('total_cost');
     }
     
