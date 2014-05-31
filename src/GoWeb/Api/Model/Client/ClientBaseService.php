@@ -141,7 +141,7 @@ class ClientBaseService extends \Sokil\Rest\Transport\Structure
     
     public function getCost()
     {
-        return (int) $this->get('cost');
+        return (float) $this->get('cost');
     }
     
     public function setCost($cost) {
