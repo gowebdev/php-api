@@ -13,6 +13,11 @@ class ClientBaseService extends \Sokil\Rest\Transport\Structure
     const STATUS_BLOCKED    = 'BLOCKED';
     const STATUS_CLOSED     = 'CLOSED';
     
+    const CHARGEOF_PERIOD_DAILY     = 'DAILY';
+    const CHARGEOF_PERIOD_MONTHLY   = 'MONTHLY';
+    
+    const DAYS_IN_MONTH = 30;
+    
     public function getId()
     {
         return (int) $this->get('id');
@@ -146,8 +151,37 @@ class ClientBaseService extends \Sokil\Rest\Transport\Structure
     
     public function setCost($cost) {
         $this->set('cost', (float) $cost);
-        $this->set('total_cost', null);
+        $this->remove('total_cost', null);
+        $this->remove('total_monthly_cost', null);
+        
         return $this;
+    }
+    
+    public function setChargeoffPeriod($period)
+    {
+        if(!in_array($period, [self::CHARGEOF_PERIOD_DAILY, self::CHARGEOF_PERIOD_MONTHLY])) {
+            throw new \Exception('Wrong changeoff period specified');
+        }
+        
+        $this->set('chargeoff_period', $period);
+        return $this;
+    }
+    
+    public function getChargeOffPeriod()
+    {
+        return $this->get('chargeoff_period');
+    }
+    
+    public function getMonthlyCost()
+    {
+        switch($this->get('chargeoff_period'))
+        {
+            case self::CHARGEOF_PERIOD_DAILY:
+                return $this->getCost() * self::DAYS_IN_MONTH;
+            
+            case self::CHARGEOF_PERIOD_MONTHLY:
+                return $this->getCost();
+        }
     }
     
     public function hasLinkedDevice()
@@ -203,7 +237,8 @@ class ClientBaseService extends \Sokil\Rest\Transport\Structure
     
     public function addAdditionalService(ClientAdditionalService $service) {
         $this->_additionalServices[] = $service;
-        $this->set('total_cost', null);
+        $this->remove('total_cost', null);
+        $this->remove('total_monthly_cost', null);
         
         return $this;
     }
@@ -231,17 +266,30 @@ class ClientBaseService extends \Sokil\Rest\Transport\Structure
     
     private function recalcTotalCost()
     {
-        // base
+        
         $totalCost = $this->getCost();
         
-        // additional
         foreach($this->getAdditionalServices() as $additionalService) {
+            /* @var $additionalService \GoWeb\Api\Model\Client\ClientAdditionalService */
             $totalCost += $additionalService->getCost();
         }
         
-        // define
         $this->set('total_cost', $totalCost);
         
+        // month
+        $chargeOffperiod = $this->getChargeOffPeriod();
+        if($chargeOffperiod && $chargeOffperiod !== self::CHARGEOF_PERIOD_MONTHLY) {
+            $totalMonthlyCost = $this->getMonthlyCost();
+            
+            foreach($this->getAdditionalServices() as $additionalService) {
+                /* @var $additionalService \GoWeb\Api\Model\Client\ClientAdditionalService */
+                $totalMonthlyCost += $additionalService->getMonthlyCost();
+            }
+        
+            $this->set('total_monthly_cost', $totalMonthlyCost);
+        }
+        
+        // define
         return $this;
     }
     
@@ -253,8 +301,17 @@ class ClientBaseService extends \Sokil\Rest\Transport\Structure
         return $this->get('total_cost');
     }
     
+    public function getTotalMonthCost()
+    {
+        if(!$this->get('total_monthly_cost')) {
+            $this->recalcTotalCost();
+        }
+        
+        return $this->get('total_monthly_cost');
+    }
+    
     public function toArray() {
-        if(!$this->get('total_cost')) {
+        if(!$this->get('total_cost') || !$this->get('total_monthly_cost')) {
             $this->recalcTotalCost();
         }
         

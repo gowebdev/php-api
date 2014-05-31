@@ -4,6 +4,10 @@ namespace GoWeb\Api\Model\Client;
 
 class ClientAdditionalService extends \Sokil\Rest\Transport\Structure
 {
+    const CHARGEOF_PERIOD_DAILY     = 'DAILY';
+    const CHARGEOF_PERIOD_MONTHLY   = 'MONTHLY';
+    
+    const DAYS_IN_MONTH = 30;
    
     public function getId()
     {
@@ -63,6 +67,33 @@ class ClientAdditionalService extends \Sokil\Rest\Transport\Structure
     {
         $this->set('cost', (float) $cost);
         return $this;
+    }
+    
+    public function setChargeoffPeriod($period)
+    {
+        if(!in_array($period, [self::CHARGEOF_PERIOD_DAILY, self::CHARGEOF_PERIOD_MONTHLY])) {
+            throw new \Exception('Wrong changeoff period specified');
+        }
+        
+        $this->set('chargeoff_period', $period);
+        return $this;
+    }
+    
+    public function getChargeOffPeriod()
+    {
+        return $this->set('chargeoff_period');
+    }
+    
+    public function getMonthlyCost()
+    {
+        switch($this->get('chargeoff_period'))
+        {
+            case self::CHARGEOF_PERIOD_DAILY:
+                return $this->getCost() * self::DAYS_IN_MONTH;
+            
+            case self::CHARGEOF_PERIOD_MONTHLY:
+                return $this->getCost();
+        }
     }
     
     public function getClientBaseServiceId()
