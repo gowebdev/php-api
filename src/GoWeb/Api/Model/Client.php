@@ -266,7 +266,7 @@ class Client extends \GoWeb\Api\Model
             // search most expensive
             while(false !== ($baseService = next($baseClientServices)))
             {                
-                if($baseService->getCost() <= $mostExpensiveBaseService->getCost()) {
+                if($baseService->getTotalCost() > $mostExpensiveBaseService->getTotalCost()) {
                     $mostExpensiveBaseService = $baseService;
                 }
             }
