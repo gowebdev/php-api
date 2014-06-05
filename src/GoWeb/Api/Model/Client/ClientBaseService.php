@@ -4,7 +4,7 @@ namespace GoWeb\Api\Model\Client;
 
 class ClientBaseService extends \Sokil\Rest\Transport\Structure
 {    
-    private $_additionalServices = array();
+    private $_additionalServices = null;
     
     private $_linkedDevice;
     
@@ -227,8 +227,7 @@ class ClientBaseService extends \Sokil\Rest\Transport\Structure
                 return new ClientAdditionalService($additionalServiceSection);
             }, $additionalServices);
         }
-        else
-        {
+        else {
             $this->_additionalServices = array();
         }
         
@@ -236,11 +235,40 @@ class ClientBaseService extends \Sokil\Rest\Transport\Structure
     }
     
     public function addAdditionalService(ClientAdditionalService $service) {
+        if(!$this->_additionalServices) {
+            $this->_additionalServices = array();
+        }
+        
         $this->_additionalServices[] = $service;
         $this->remove('total_cost', null);
         $this->remove('total_monthly_cost', null);
         
         return $this;
+    }
+    
+    
+    public function hasAdditionalServices()
+    {
+        return (bool) $this->get('additional');
+    }
+    
+    /**
+     * @param type $clientAdditionalServiceId
+     * @return boolean
+     */
+    public function hasAdditionalService($clientAdditionalServiceId)
+    {
+        if(!$this->hasAdditionalServices()) {
+            return false;
+        }
+        
+        foreach($this->getAdditionalServices() as $clientAdditionalService) {
+            if($clientAdditionalService->getId() === (int) $clientAdditionalServiceId) {
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     /**

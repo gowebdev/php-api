@@ -95,4 +95,37 @@ class ClientBaseServiceTest extends \PHPUnit_Framework_TestCase
             ],
         ], $clientBaseService->toArray());
     }
+    
+    /**
+     * @covers GoWeb\Api\Model\Client\ClientBaseServiceTest::hasAdditionalService()
+     */
+    public function testHasAdditionalService()
+    {
+        $clientBaseService = new ClientBaseService(array(
+            "id" => 45599,
+            "service_id" => 9,
+            "name" => "Домашний",
+            "custom_name" => "Послуга№45599",
+            "cost" => 0.033,
+            "chargeoff_period" => "DAILY",
+            "status" => "ACTIVE",
+            "catchup" => 1,
+            "ad" => 0,
+            "total_cost" => 1.033,
+            "total_monthly_cost" => 30.99,
+            "additional" => array(
+                array(
+                    "id" => 45602,
+                    "service_id" => 30,
+                    "name" => "Additional1",
+                    "cost" => 1,
+                    "chargeoff_period" => "DAILY"
+                )
+            )
+        ));
+        
+        $this->assertTrue($clientBaseService->hasAdditionalService(45602));
+        $this->assertTrue($clientBaseService->hasAdditionalService("45602"));
+        $this->assertFalse($clientBaseService->hasAdditionalService(123456));
+    }
 }
