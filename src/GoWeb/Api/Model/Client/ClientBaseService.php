@@ -146,7 +146,7 @@ class ClientBaseService extends \Sokil\Rest\Transport\Structure
     
     public function getCost()
     {
-        return (float) $this->get('cost');
+        return $this->get('cost') === null ? null : (float) $this->get('cost');
     }
     
     public function setCost($cost) {
@@ -174,6 +174,10 @@ class ClientBaseService extends \Sokil\Rest\Transport\Structure
     
     public function getMonthlyCost()
     {
+        if(null === $this->getCost()) {
+            return null;
+        }
+        
         switch($this->get('chargeoff_period'))
         {
             case self::CHARGEOF_PERIOD_DAILY:
@@ -294,15 +298,18 @@ class ClientBaseService extends \Sokil\Rest\Transport\Structure
     
     private function recalcTotalCost()
     {
-        
         $totalCost = $this->getCost();
+        if(null === $totalCost) {
+            return $this;
+        }
         
+        // day
         foreach($this->getAdditionalServices() as $additionalService) {
             /* @var $additionalService \GoWeb\Api\Model\Client\ClientAdditionalService */
             $totalCost += $additionalService->getCost();
         }
-        
-        $this->set('total_cost', $totalCost);
+
+        $this->set('total_cost', $totalCost);            
         
         // month
         $chargeOffperiod = $this->getChargeOffPeriod();

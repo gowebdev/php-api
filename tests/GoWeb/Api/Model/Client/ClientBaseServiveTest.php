@@ -33,7 +33,7 @@ class ClientBaseServiceTest extends \PHPUnit_Framework_TestCase
         $clientBaseService = new ClientBaseService;
         
         // no cost defined
-        $this->assertEquals(['total_cost' => 0], $clientBaseService->toArray());
+        $this->assertEquals([], $clientBaseService->toArray());
         
         // define base cost
         $clientBaseService->setCost(12.2);
@@ -61,7 +61,7 @@ class ClientBaseServiceTest extends \PHPUnit_Framework_TestCase
         $clientBaseService = new ClientBaseService;
         
         // no cost defined
-        $this->assertEquals(['total_cost' => 0], $clientBaseService->toArray());
+        $this->assertEquals([], $clientBaseService->toArray());
         
         // define base cost
         $clientBaseService
