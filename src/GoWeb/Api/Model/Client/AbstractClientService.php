@@ -103,6 +103,10 @@ abstract class AbstractClientService extends \Sokil\Rest\Transport\Structure
     public function getRegions()
     {
         $regions = $this->get('regions');
+        if(!$regions) {
+            return null;
+        }
+        
         if(!is_array($regions)) {
             $regions = explode(',', $regions);
         }
