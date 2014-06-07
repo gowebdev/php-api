@@ -122,6 +122,6 @@ abstract class AbstractClientService extends \Sokil\Rest\Transport\Structure
     
     public function getChargeOffPeriod()
     {
-        return $this->set('chargeoff_period');
+        return $this->get('chargeoff_period');
     }
 }
