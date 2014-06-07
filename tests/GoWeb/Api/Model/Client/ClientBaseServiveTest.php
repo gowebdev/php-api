@@ -128,4 +128,20 @@ class ClientBaseServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($clientBaseService->hasAdditionalService("45602"));
         $this->assertFalse($clientBaseService->hasAdditionalService(123456));
     }
+    
+    public function testSetRegionsAsString()
+    {
+        $clientBaseService = new ClientBaseService();
+        $clientBaseService->setRegions('uk,ru,en');
+        
+        $this->assertEquals(array('uk','ru','en'), $clientBaseService->getRegions());
+    }
+    
+    public function testSetRegionsAsArray()
+    {
+        $clientBaseService = new ClientBaseService();
+        $clientBaseService->setRegions(array('uk','ru','en'));
+        
+        $this->assertEquals(array('uk','ru','en'), $clientBaseService->getRegions());
+    }
 }

@@ -106,4 +106,24 @@ class ClientAdditionalService extends \Sokil\Rest\Transport\Structure
         $this->set('client_base_service_id', (int) $id);
         return $this; 
     }
+    
+    public function setRegions($regions)
+    {
+        if(is_array($regions)) {
+            $regions = implode(',', $regions);
+        }
+        
+        $this->set('regions', $regions);
+        return $this;
+    }
+    
+    public function getRegions()
+    {
+        $regions = $this->get('regions');
+        if(!is_array($regions)) {
+            $regions = explode(',', $regions);
+        }
+        
+        return $regions;
+    }
 }

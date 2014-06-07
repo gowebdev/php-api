@@ -345,6 +345,26 @@ class ClientBaseService extends \Sokil\Rest\Transport\Structure
         return $this->get('total_monthly_cost');
     }
     
+    public function setRegions($regions)
+    {
+        if(is_array($regions)) {
+            $regions = implode(',', $regions);
+        }
+        
+        $this->set('regions', $regions);
+        return $this;
+    }
+    
+    public function getRegions()
+    {
+        $regions = $this->get('regions');
+        if(!is_array($regions)) {
+            $regions = explode(',', $regions);
+        }
+        
+        return $regions;
+    }
+    
     public function toArray() {
         if(!$this->get('total_cost') || !$this->get('total_monthly_cost')) {
             $this->recalcTotalCost();
