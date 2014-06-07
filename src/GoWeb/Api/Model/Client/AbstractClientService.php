@@ -36,6 +36,17 @@ abstract class AbstractClientService extends \Sokil\Rest\Transport\Structure
         return $this;
     }
     
+    public function getName()
+    {
+        return $this->get('name');
+    }
+    
+    public function setName($name)
+    {
+        $this->set('name', $name);
+        return $this; 
+    }
+    
     public function getCustomName()
     {
         return $this->get('custom_name');
@@ -63,6 +74,22 @@ abstract class AbstractClientService extends \Sokil\Rest\Transport\Structure
         return $this;
     }
     
+    public function getMonthlyCost()
+    {
+        if(null === $this->getCost()) {
+            return null;
+        }
+        
+        switch($this->get('chargeoff_period'))
+        {
+            case self::CHARGEOF_PERIOD_DAILY:
+                return $this->getCost() * self::DAYS_IN_MONTH;
+            
+            case self::CHARGEOF_PERIOD_MONTHLY:
+                return $this->getCost();
+        }
+    }
+    
     public function setRegions($regions)
     {
         if(is_array($regions)) {
@@ -81,5 +108,20 @@ abstract class AbstractClientService extends \Sokil\Rest\Transport\Structure
         }
         
         return $regions;
+    }
+    
+    public function setChargeoffPeriod($period)
+    {
+        if(!in_array($period, [self::CHARGEOF_PERIOD_DAILY, self::CHARGEOF_PERIOD_MONTHLY])) {
+            throw new \Exception('Wrong changeoff period specified');
+        }
+        
+        $this->set('chargeoff_period', $period);
+        return $this;
+    }
+    
+    public function getChargeOffPeriod()
+    {
+        return $this->set('chargeoff_period');
     }
 }

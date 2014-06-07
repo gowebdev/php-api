@@ -13,17 +13,6 @@ class ClientBaseService extends AbstractClientService
     const STATUS_BLOCKED    = 'BLOCKED';
     const STATUS_CLOSED     = 'CLOSED';
     
-    public function getName()
-    {
-        return $this->get('name');
-    }
-    
-    public function setName($name)
-    {
-        $this->set('name', $name);
-        return $this; 
-    }
-    
     public function getBaseServiceId()
     {
         return (int) $this->get('service_id');
@@ -110,37 +99,6 @@ class ClientBaseService extends AbstractClientService
         $this->remove('total_monthly_cost', null);
         
         return $this;
-    }
-    
-    public function setChargeoffPeriod($period)
-    {
-        if(!in_array($period, [self::CHARGEOF_PERIOD_DAILY, self::CHARGEOF_PERIOD_MONTHLY])) {
-            throw new \Exception('Wrong changeoff period specified');
-        }
-        
-        $this->set('chargeoff_period', $period);
-        return $this;
-    }
-    
-    public function getChargeOffPeriod()
-    {
-        return $this->get('chargeoff_period');
-    }
-    
-    public function getMonthlyCost()
-    {
-        if(null === $this->getCost()) {
-            return null;
-        }
-        
-        switch($this->get('chargeoff_period'))
-        {
-            case self::CHARGEOF_PERIOD_DAILY:
-                return $this->getCost() * self::DAYS_IN_MONTH;
-            
-            case self::CHARGEOF_PERIOD_MONTHLY:
-                return $this->getCost();
-        }
     }
     
     public function hasLinkedDevice()
