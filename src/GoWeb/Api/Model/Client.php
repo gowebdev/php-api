@@ -282,7 +282,7 @@ class Client extends \GoWeb\Api\Model
      * @return type
      */
     public function isDemo() {
-        return !$this->getActiveClientBaseServiceId();
+        return 0 === (int) $this->getProfile()->getId();
     }
     
     public function enableTester()
